@@ -1,0 +1,13 @@
+!register - type this for the first time only
+
+!pull [c/w/s] - pull 10 in banner c - character, w - weapon, s -standard
+
+!setpity [c/w/s] [number] - set custom pity for a specific banner
+
+!summ - see your summary pulls
+
+!reset - reset your pull records
+
+!abyss - time left before abyss reset
+
+!resin [number1] [number2] - time your resin will be at number2 (if no input for number2 it will be 160 instead)

@@ -51,8 +51,8 @@ class BotGacha {
                 pity_c: [0,0],
                 pity_w: [0,0],
                 pity_s: [0,0],
-                featured_4: false,
-                featured_5: false,
+                featured_4: [false,false],
+                featured_5: [false,false],
                 counter: [0,0],
                 item: []
             }
@@ -99,11 +99,11 @@ class BotGacha {
             result.color = 'FFD700';
             var star = `★★★★★`;
             let roll = Math.random();
-            if (player.featured_5 == true || roll < 0.5) {
-                player.featured_5 = false;
+            if (player.featured_5[0] == true || roll < 0.5) {
+                player.featured_5[0] = false;
                 var item = select(featured.char_5star);  
             } else {
-                player.featured_5 = true;
+                player.featured_5[0] = true;
                 var item = select(char_5_star);
             }
         }
@@ -115,11 +115,11 @@ class BotGacha {
             player.counter[0] += 1;
             var star = `★★★★`;
             let roll = Math.random();
-            if (player.featured_4 == true || roll < 0.5) {
-                player.featured_4 = false;
+            if (player.featured_4[0] == true || roll < 0.5) {
+                player.featured_4[0] = false;
                 var item = select(featured.char_4star);
             } else {
-                player.featured_4 = true;
+                player.featured_4[0] = true;
                 var item = select(item_4_star);
             }     
         }
@@ -175,11 +175,11 @@ class BotGacha {
             result.color = 'FFD700';
             var star = `★★★★★`;
             let roll = Math.random();
-            if (player.featured_5 == true || roll < 0.5) {
-                player.featured_5 = false;
+            if (player.featured_5[1] == true || roll < 0.75) {
+                player.featured_5[1] = false;
                 var item = select(featured.weapon_5star);  
             } else {
-                player.featured_5 = true;
+                player.featured_5[1] = true;
                 var item = select(weapon_5_star);
             }
         }
@@ -191,11 +191,11 @@ class BotGacha {
             player.counter[0] += 1;
             var star = `★★★★`;
             let roll = Math.random();
-            if (player.featured_4 == true || roll < 0.5) {
-                player.featured_4 = false;
+            if (player.featured_4[1] == true || roll < 0.75) {
+                player.featured_4[1] = false;
                 var item = select(featured.weapon_4star);
             } else {
-                player.featured_4 = true;
+                player.featured_4[1] = true;
                 var item = select(item_4_star);
             }     
         }
@@ -319,25 +319,27 @@ class BotGacha {
         if (!banner) return message.channel.send(`Please select a banner`);
         if (!num || Number(num) < 0) return message.channel.send(`Invalid input`);
 
-        while (num > 90) num -= 90;
         const player = this.players[user.id];
         
         // manually set the pity counter at the selected banner
         switch(banner) {
             case 'c':
                 banner = 'character';
+                while (num >= 90) num -= 90;
                 player.pity_c[0] = Number(num);
                 player.pity_c[1] = Number(num) % 10;
             break;
 
             case 'w':
                 banner = 'weapon';
+                while (num >= 80) num -= 80;
                 player.pity_w[0] = Number(num);
                 player.pity_w[1] = Number(num) % 10;
             break;
 
             case 's':
                 banner = 'standard';
+                while (num >= 90) num -= 90;
                 player.pity_s[0] = Number(num);
                 player.pity_s[1] = Number(num) % 10;
             break;
@@ -346,7 +348,7 @@ class BotGacha {
                 return message.channel.send(`Invalid input`);
         }
 
-        return message.channel.send(`Pity counter for ${banner} has been set to ${num}`);
+        return message.channel.send(`Pity counter for ${banner} banner has been set to ${num}`);
     }
 
     // get summary pulls of user so far
@@ -378,8 +380,8 @@ class BotGacha {
             pity_c: [0,0],
             pity_w: [0,0],
             pity_s: [0,0],
-            featured_4: false,
-            featured_5: false,
+            featured_4: [false,false],
+            featured_5: [false,false],
             counter: [0,0],
             item: []
         }

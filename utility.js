@@ -36,14 +36,18 @@ module.exports = {
         let hours = today.getHours() + Math.floor(minutes/60) + in_hour;
 
         // if more than 60 minutes
+        var day = 'today';
         if (minutes > 59) minutes -= 60;
-        if (hours > 23) hours -= 24;
+        if (hours > 23) {
+            day = 'tomorrow';
+            hours -= 24;
+        }
         
         // HH:MM format
         hours = ("0" + hours).slice(-2);
         minutes = ("0" + minutes).slice(-2);
 
-        message.channel.send(`Your resin will reach ${final_resin} at ` + hours + `:` + minutes);
+        message.channel.send(`Your resin will reach ${final_resin} at **` + hours + `:` + minutes + ` ${day}**`);
     },
 
     get_abyss_reset: function (message) {

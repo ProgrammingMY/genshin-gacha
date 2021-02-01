@@ -2,7 +2,7 @@
 
 !pull [c/w/s] - pull 10 in banner c - character, w - weapon, s -standard
 
-!setpity [c/w/s] [number] - set custom pity for a specific banner
+!setpity [c/w/s] [number] [y] - set custom pity for a specific banner. Put y if your next 5 star is guaranteed featured character
 
 !summ - see your summary pulls
 

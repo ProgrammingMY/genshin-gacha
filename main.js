@@ -30,7 +30,7 @@ bot.on('message', async message => {
     switch(args[0]) {
 
         case 'pull':
-            botgacha.multi_pull(message, message.author, args[1]);
+            botgacha.multi_pull(message, args[1], args[2]);
         break;
 
         case 'register':
@@ -56,7 +56,7 @@ bot.on('message', async message => {
 
         case 'resin':
             if (!args[1]) return message.channel.send(`Invalid input!`);
-            utils.get_max_resin_time(message, args[1], args[2]);
+            utils.get_max_resin_time(message, args[1], args[2], args[3]);
         break; 
 
         case 'abyss':

@@ -1,6 +1,6 @@
 {
-    "char_4star": ["Xinyan", "Beidou", "Diona"],
-    "char_5star": ["Xiao"],
+    "char_4star": ["Barbara", "Bennett", "Ningguang"],
+    "char_5star": ["Keqing"],
     "weapon_4star": ["Sacrificial Greatsword", "Favonius Lance", "Rust", "Eye of Perception", "The Flute"],
     "weapon_5star": ["Primodial Jade Winged Spear", "Primodial Jade Cutter"]
 }

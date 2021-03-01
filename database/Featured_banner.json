@@ -1,6 +1,6 @@
 {
-    "char_4star": ["Barbara", "Bennett", "Ningguang"],
-    "char_5star": ["Keqing"],
+    "char_4star": ["Xiangling", "Xingqiu", "Chongyun"],
+    "char_5star": ["Hu Tao"],
     "weapon_4star": ["Lion's Roar", "Lithic Blade", "Sacrificial Bow", "The Widsith", "Lithic Spear"],
     "weapon_5star": ["Wolf's Gravestone", "Staff of Homa"]
 }

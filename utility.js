@@ -1,5 +1,6 @@
+const { defaultCipherList } = require('constants');
 const Discord = require('discord.js');
-var fs = require('fs');
+const fs = require('fs');
 
 // get abyss time
 var today = new Date();
@@ -17,6 +18,68 @@ function get_remaining_time (message, start, end) {
     hours = Math.floor(hours);
 
     message.channel.send(`Abyss will reset in ` + days + ` days ` + hours + ` hours ` + minutes + ` minutes`);
+}
+
+function get_array_from_item (item) {
+    var item_list = item.split(",");
+
+    return item_list;
+}
+
+function change_banner (message, command, banner, item) {
+    //show, add
+    var featured_database = "./database/Featured_banner.json";
+
+    let rawdata = fs.readFileSync('./database/Featured_banner.json');
+    const featured = JSON.parse(rawdata);
+
+    if (command == 'add') {
+        if (!item) return message.channel.send("Incorrect input!");
+        var item_list = get_array_from_item(item);
+        switch (banner) {
+            case '4char':
+                featured.char_4star = item_list;
+            break;
+
+            case '5char':
+                featured.char_5star = item_list;
+            break;
+
+            case '4weap':
+                featured.weapon_4star = item_list;
+            break;
+
+            case '5weap':
+                featured.weapon_5star = item_list;
+            break;
+
+            default:
+                return message.channel.send("Incorrect input!");
+        }
+    } else if (command == 'show') {
+        switch (banner) {
+            case '4char':
+                return message.channel.send(featured.char_4star);
+
+            case '5char':
+                return message.channel.send(featured.char_5star);
+
+            case '4weap':
+                return message.channel.send(featured.weapon_4star);
+
+            case '5weap':
+                return message.channel.send(featured.weapon_5star);
+
+            default:
+                return message.channel.send("Incorrect input!");
+        }
+    }
+
+    // save the database
+    let data = JSON.stringify(featured, null, 2);
+    fs.writeFileSync(featured_database, data);
+
+    message.channel.send("Banner has been updated!");
 }
 
 module.exports = {
@@ -75,5 +138,9 @@ module.exports = {
 
             message.channel.send(helpEmbed);
         });
+    },
+
+    change_banner: function (message, command, banner, item) {
+        change_banner (message, command, banner, item);
     }
 };

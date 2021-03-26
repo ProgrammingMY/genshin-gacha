@@ -12,8 +12,6 @@ rawdata = fs.readFileSync('./database/5_star_char.json');
 const char_5_star = JSON.parse(rawdata);
 rawdata = fs.readFileSync('./database/5_star_weapon.json');
 const weapon_5_star = JSON.parse(rawdata);
-rawdata = fs.readFileSync('./database/Featured_banner.json');
-const featured = JSON.parse(rawdata);
 
 // define rate
 const RATE = {
@@ -47,6 +45,120 @@ function updateEmbed(result) {
     result_msg.edit({embed: result_embed});
 }
 
+ /////////////////////////// character banner /////////////////////////////////
+ function pull_banner (player, result, banner, rigged, featured) {
+    player.pulls[banner] += 1;
+    var chance_5 = 0;
+    var chance_4 = 0;
+
+    // check pity
+    // 0 - character, 1 - weapon, 2 - standard
+    switch(banner) {
+        case 0:
+        case 2:
+            if (rigged == true) chance_5 = RATE.rigged;
+            else if (player.pity_5[banner] < 44) chance_5 = RATE.standard_5[0];
+            else if (player.pity_5[banner] < 74) chance_5 = RATE.standard_5[1];
+            else if (player.pity_5[banner] < 89) chance_5 = RATE.standard_5[2];
+            else chance_5 = 1;
+
+            if (player.pity_4[banner] < 6) chance_4 = RATE.standard_4[0];
+            else if (player.pity_4[banner] < 9) chance_4 = RATE.standard_4[1];
+            else chance_4 = 1;
+        break;
+
+        case 1:
+            if (rigged == true) chance_5 = RATE.rigged;
+            else if (player.pity_5[banner] < 34) chance_5 = RATE.weapon_5[0];
+            else if (player.pity_5[banner] < 64) chance_5 = RATE.weapon_5[1];
+            else if (player.pity_5[banner] < 79) chance_5 = RATE.weapon_5[2];
+            else chance_5 = 1;
+
+            if (player.pity_4[banner] < 6) chance_4 = RATE.weapon_4[0];
+            else if (player.pity_4[banner] < 9) chance_4 = RATE.weapon_4[1];
+            else chance_4 = 1;
+        break;
+    }
+    
+    // let's roll!
+    var roll = Math.random();
+
+    // get a 5 star
+    if (roll < chance_5) {
+        player.pity_5[banner] = 0;
+        player.pity_4[banner] += 1;
+        player.counter[0] += 1;
+        result.color = 'FFD700';
+        var star = `★★★★★`;
+        let roll = Math.random();
+        // if standard banner
+        if (banner == 2) var item = select(item_5_star);
+        // if character banner
+        else if (banner == 0) {
+            if (player.featured_5[0] == true || roll < 0.5) {
+                player.featured_5[0] = false;
+                var item = select(featured.char_5star);  
+            } else {
+                player.featured_5[0] = true;
+                var item = select(char_5_star);
+            }
+        // if weapon banner
+        } else {
+            if (player.featured_5[1] == true || roll < 0.75) {
+                player.featured_5[1] = false;
+                var item = select(featured.weapon_5star);  
+            } else {
+                player.featured_5[1] = true;
+                var item = select(weapon_5_star);
+            }
+        }
+    }
+
+    // get a 4 star
+    else if (roll < (chance_5 + chance_4)) {
+        player.pity_5[banner] += 1;
+        player.pity_4[banner] = 0;
+        player.counter[1] += 1;
+        var star = `★★★★`;
+        let roll = Math.random();
+        // if standard banner
+        if (banner == 2) var item = select(item_4_star);
+        // if character banner
+        else if (banner == 0){
+            if (player.featured_4[0] == true || roll < 0.5) {
+                player.featured_4[0] = false;
+                var item = select(featured.char_4star);
+            } else {
+                player.featured_4[0] = true;
+                var item = select(item_4_star);
+            }  
+        // if weapon banner  
+        } else {
+            if (player.featured_4[1] == true || roll < 0.75) {
+                player.featured_4[1] = false;
+                var item = select(featured.weapon_4star);
+            } else {
+                player.featured_4[1] = true;
+                var item = select(item_4_star);
+            }
+        }
+         
+    }
+    
+    // get a 3 star
+    else {
+        player.pity_5[banner] += 1;
+        player.pity_4[banner] += 1;
+        var star = `★★★`;
+        var item = select(item_3_star);
+    }
+
+    result.star += `\n ${star}`;
+    result.item += `\n ${item}`;
+    if (player.pulls[banner] % 2 == 0) updateEmbed(result);
+    return result;
+}
+
 class BotGacha {
     constructor () {
         this.players = {};
@@ -70,127 +182,14 @@ class BotGacha {
         
     }
 
-    /////////////////////////// character banner /////////////////////////////////
-    pull_banner (message, result, banner, rigged) {
-
-        let user = message.author;
-        const player = this.players[user.id];
-        player.pulls[banner] += 1;
-        var chance_5 = 0;
-        var chance_4 = 0;
-
-        // check pity
-        // 0 - character, 1 - weapon, 2 - standard
-        switch(banner) {
-            case 0:
-            case 2:
-                if (rigged == true) chance_5 = RATE.rigged;
-                else if (player.pity_5[banner] < 44) chance_5 = RATE.standard_5[0];
-                else if (player.pity_5[banner] < 74) chance_5 = RATE.standard_5[1];
-                else if (player.pity_5[banner] < 89) chance_5 = RATE.standard_5[2];
-                else chance_5 = 1;
-
-                if (player.pity_4[banner] < 6) chance_4 = RATE.standard_4[0];
-                else if (player.pity_4[banner] < 9) chance_4 = RATE.standard_4[1];
-                else chance_4 = 1;
-            break;
-
-            case 1:
-                if (rigged == true) chance_5 = RATE.rigged;
-                else if (player.pity_5[banner] < 34) chance_5 = RATE.weapon_5[0];
-                else if (player.pity_5[banner] < 64) chance_5 = RATE.weapon_5[1];
-                else if (player.pity_5[banner] < 79) chance_5 = RATE.weapon_5[2];
-                else chance_5 = 1;
-
-                if (player.pity_4[banner] < 6) chance_4 = RATE.weapon_4[0];
-                else if (player.pity_4[banner] < 9) chance_4 = RATE.weapon_4[1];
-                else chance_4 = 1;
-            break;
-        }
-        
-        // let's roll!
-        var roll = Math.random();
-
-        // get a 5 star
-        if (roll < chance_5) {
-            player.pity_5[banner] = 0;
-            player.pity_4[banner] += 1;
-            player.counter[0] += 1;
-            result.color = 'FFD700';
-            var star = `★★★★★`;
-            let roll = Math.random();
-            // if standard banner
-            if (banner == 2) var item = select(item_5_star);
-            // if character banner
-            else if (banner == 0) {
-                if (player.featured_5[0] == true || roll < 0.5) {
-                    player.featured_5[0] = false;
-                    var item = select(featured.char_5star);  
-                } else {
-                    player.featured_5[0] = true;
-                    var item = select(char_5_star);
-                }
-            // if weapon banner
-            } else {
-                if (player.featured_5[1] == true || roll < 0.75) {
-                    player.featured_5[1] = false;
-                    var item = select(featured.weapon_5star);  
-                } else {
-                    player.featured_5[1] = true;
-                    var item = select(weapon_5_star);
-                }
-            }
-        }
-
-        // get a 4 star
-        else if (roll < (chance_5 + chance_4)) {
-            player.pity_5[banner] += 1;
-            player.pity_4[banner] = 0;
-            player.counter[1] += 1;
-            var star = `★★★★`;
-            let roll = Math.random();
-            // if standard banner
-            if (banner == 2) var item = select(item_4_star);
-            // if character banner
-            else if (banner == 0){
-                if (player.featured_4[0] == true || roll < 0.5) {
-                    player.featured_4[0] = false;
-                    var item = select(featured.char_4star);
-                } else {
-                    player.featured_4[0] = true;
-                    var item = select(item_4_star);
-                }  
-            // if weapon banner  
-            } else {
-                if (player.featured_4[1] == true || roll < 0.75) {
-                    player.featured_4[1] = false;
-                    var item = select(featured.weapon_4star);
-                } else {
-                    player.featured_4[1] = true;
-                    var item = select(item_4_star);
-                }
-            }
-             
-        }
-        
-        // get a 3 star
-        else {
-            player.pity_5[banner] += 1;
-            player.pity_4[banner] += 1;
-            var star = `★★★`;
-            var item = select(item_3_star);
-        }
-
-        result.star += `\n ${star}`;
-        result.item += `\n ${item}`;
-        updateEmbed(result);
-        return result;
-    }
-
     async multi_pull (message, banner, rigged) {
         let user = message.author;
+        const player = this.players[user.id];
         if (!this.players[user.id]) return message.channel.send(`Please use !register to join the salt!`);
         if (!banner) return message.channel.send(`Please select a banner`);
+
+        let rawdata = fs.readFileSync('./database/Featured_banner.json');
+        var featured = JSON.parse(rawdata);
 
         // create an embed
         var result_embed = {
@@ -222,7 +221,9 @@ class BotGacha {
             return message.channel.send(`Invalid input!`);
         }
 
-        for (var i = 0; i < 10; i++) result = this.pull_banner(message, result, bann, rigged);
+        for (var i = 0; i < 10; i++) {
+            result = pull_banner(player, result, bann, rigged, featured);
+        }
 
     }
 
@@ -308,18 +309,6 @@ class BotGacha {
 
         return message.channel.send(`Your pity counter has been reset!`);
     }
-
-    //kiv
-
-    get_item (message, user) {
-        if (!this.players[user.id]) return message.channel.send(`Please use !register to join the salt!`);
-
-        const player = this.players[user.id];
-
-
-    }
-
-
 }
 
 module.exports = BotGacha;

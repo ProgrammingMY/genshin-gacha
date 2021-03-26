@@ -63,6 +63,13 @@ bot.on('message', async message => {
             utils.get_abyss_reset(message);
         break;
 
+        case 'admin':
+            if (message.author.id != "466594885844336651") return message.channel.send("Only Aki Kun can use this command");
+            if (!args[2]) return message.channel.send(`The command is !admin <command> <banner> <item>`);
+            var keyword = message.content.substring(PREFIX.length + args[0].length + args[1].length + args[2].length + 3);
+            utils.change_banner(message, args[1], args[2], keyword);
+        break;
+
     }
 })
 

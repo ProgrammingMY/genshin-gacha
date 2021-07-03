@@ -1,3 +1,4 @@
 .env
 ./auto-login/.env
 node_modules
+auto-login/__pycache__

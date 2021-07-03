@@ -44,7 +44,7 @@ const paimon_reply = [`EHE TE NANDAYO!?`, `EHE KEPALA BAPAK KAU!?`]
 
 bot.on('ready', () => {
     bot.user.setActivity('!help to get started');
-    login_channel = bot.channels.cache.get('769432579068788767'); // Channel to send notification
+    login_channel = bot.channels.cache.get('804284465534861312'); // Channel to send notification
     console.log('gachabot is online!');
 });
 
@@ -103,9 +103,8 @@ bot.on('message', async message => {
         break;
 
         case 'login':
-            let date_ob = new Date();
-            console.log(date_ob.getHours() + ":" + date_ob.getMinutes());
-        break;
+		auto_login();
+	break;
 
     }
 })

@@ -1,7 +1,38 @@
 const Discord = require('discord.js');
 require('dotenv').config();
-var BotGacha = require('./gacha.js');
-var utils = require('./utility.js');
+const BotGacha = require('./gacha.js');
+const utils = require('./utility.js');
+
+// to run python script (auto login feature)
+const {spawn} = require('child_process');
+const login_time = [1, 0];
+var login_channel;
+
+function auto_login(){
+    var dataToSend;
+    // spawn new child process to call the python script
+    const python = spawn('python3', ['./auto-login/genshin-os.py']);
+    // collect data from script
+    python.stdout.on('data', function (data) {
+        console.log('Pipe data from python script ...');
+        dataToSend = data.toString();
+        var embedmsg = new Discord.MessageEmbed()
+            .setDescription(dataToSend);
+        login_channel.send(embedmsg);
+    });
+    // in close event we are sure that stream from child process is closed
+    python.on('close', (code) => {
+    console.log(`child process close all stdio with code ${code}`);
+    });
+}
+
+// check time every minute
+setInterval(function() {
+    let date_ob = new Date();
+    if (date_ob.getHours() == login_time[0] && date_ob.getMinutes() == login_time[1]){
+        auto_login();
+    }
+}, 60 * 1000) //check every minute
 
 const bot = new Discord.Client();
 const token = process.env.DISCORD_KEY; 
@@ -13,6 +44,7 @@ const paimon_reply = [`EHE TE NANDAYO!?`, `EHE KEPALA BAPAK KAU!?`]
 
 bot.on('ready', () => {
     bot.user.setActivity('!help to get started');
+    login_channel = bot.channels.cache.get('769432579068788767'); // Channel to send notification
     console.log('gachabot is online!');
 });
 
@@ -68,6 +100,11 @@ bot.on('message', async message => {
             if (!args[2]) return message.channel.send(`The command is !admin <command> <banner> <item>`);
             var keyword = message.content.substring(PREFIX.length + args[0].length + args[1].length + args[2].length + 3);
             utils.change_banner(message, args[1], args[2], keyword);
+        break;
+
+        case 'login':
+            let date_ob = new Date();
+            console.log(date_ob.getHours() + ":" + date_ob.getMinutes());
         break;
 
     }

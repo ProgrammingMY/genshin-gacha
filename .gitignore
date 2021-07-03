@@ -1,1 +1,3 @@
 .env
+./auto-login/.env
+node_modules

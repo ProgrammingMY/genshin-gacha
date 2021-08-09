@@ -36,6 +36,7 @@ function change_banner (message, command, banner, item) {
     if (command == 'add') {
         if (!item) return message.channel.send("Incorrect input!");
         var item_list = get_array_from_item(item);
+    	message.channel.send("Banner has been updated!");
         switch (banner) {
             case '4char':
                 featured.char_4star = item_list;
@@ -79,7 +80,6 @@ function change_banner (message, command, banner, item) {
     let data = JSON.stringify(featured, null, 2);
     fs.writeFileSync(featured_database, data);
 
-    message.channel.send("Banner has been updated!");
 }
 
 module.exports = {

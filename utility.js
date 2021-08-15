@@ -9,6 +9,8 @@ var abyss2 = new Date(today.getFullYear(), today.getMonth(), 16, 4, 0, 0);
 
 var one_day = 1000*60*60*24;
 
+const RESIN = `<:resin:810746618432323626>`;
+
 function get_remaining_time (message, start, end) {
     // calculate the remaining time in days, hours, minutes
     let remaining = (end.getTime()-start.getTime()) / one_day;
@@ -86,6 +88,7 @@ module.exports = {
     get_max_resin_time: function (message, resin, final_resin = 160) {
         // get current time
         var today = new Date();
+        console.log(today);
 
         if (isNaN(resin) || resin < 0) return message.channel.send(`Invalid input!`);
 
@@ -105,12 +108,24 @@ module.exports = {
             day = 'tomorrow';
             hours -= 24;
         }
+
+        var apm = 'AM';
+        var apm_hour = hours;
+        if (hours > 12) {
+            apm_hour -= 12;
+            apm = 'PM';
+        }
         
         // HH:MM format
         hours = ("0" + hours).slice(-2);
         minutes = ("0" + minutes).slice(-2);
 
-        message.channel.send(`Your resin will reach ${final_resin} at **` + hours + `:` + minutes + ` ${day}**`);
+        var format_24 = `${hours}:${minutes}`;
+        var format_12 = `${apm_hour}:${minutes}${apm}`;
+
+        var msg = `${final_resin}${RESIN} at \`${format_24}\`/\`${format_12}\` \`${day}\``;
+
+        message.channel.send(msg);
     },
 
     get_abyss_reset: function (message) {

@@ -88,7 +88,6 @@ module.exports = {
     get_max_resin_time: function (message, resin, final_resin = 160) {
         // get current time
         var today = new Date();
-        console.log(today);
 
         if (isNaN(resin) || resin < 0) return message.channel.send(`Invalid input!`);
 

@@ -1,5 +1,5 @@
 import os
-from discord_webhook import DiscordWebhook, DiscordEmbed
+#from discord_webhook import DiscordWebhook, DiscordEmbed
 from settings import log, req
 
 
@@ -101,8 +101,8 @@ class Notify(object):
             log.info(f'Discord SKIPPED')
             return False
 
-        webhook = DiscordWebhook(url=DISCORD_WEBHOOK)
-        embed = DiscordEmbed(title=f'{text} {status}', description=desp, color='03b2f8')
+        #webhook = DiscordWebhook(url=DISCORD_WEBHOOK)
+        #embed = DiscordEmbed(title=f'{text} {status}', description=desp, color='03b2f8')
         webhook.add_embed(embed)
         response = webhook.execute()
         if (response.status_code == 200):

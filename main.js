@@ -40,7 +40,8 @@ const PREFIX = '!';
 
 var botgacha = new BotGacha;
 
-const paimon_reply = [`EHE TE NANDAYO!?`, `EHE KEPALA BAPAK KAU!?`]
+const PAIMON_REPLY = [`EHE TE NANDAYO!?`, `EHE KEPALA BAPAK KAU!?`, {files: ["https://media.discordapp.net/attachments/852519458760294400/877514791378382948/image0.jpg"]}]
+const COPIUM_REPLY = {files: ["https://media.discordapp.net/attachments/852519458760294400/877514748390932480/image0.jpg"]}
 
 bot.on('ready', () => {
     bot.user.setActivity('!help to get started');
@@ -49,9 +50,13 @@ bot.on('ready', () => {
 });
 
 bot.on('message', async message => {
-    if (message.content.match(/\behe\b/)) {
-        var reply = paimon_reply[Math.floor(Math.random() * paimon_reply.length)];
+    if (message.author.bot) return;
+    if (message.content.match(/\behe\b/i)) {
+        var reply = PAIMON_REPLY[Math.floor(Math.random() * PAIMON_REPLY.length)];
         message.channel.send(reply);
+    }
+    if (message.content.match(/\bcopium\b/i)) {
+        message.channel.send(COPIUM_REPLY);
     }
 
 
@@ -71,7 +76,7 @@ bot.on('message', async message => {
 
         case 'setpity':
             if (!args[1]) return message.channel.send(`Invalid input!`);
-            botgacha.set_pity(message, message.author, args[1], args[2]);
+            botgacha.set_pity(message, message.author, args[1], args[2], args[3]);
         break;
 
         case 'summ':
@@ -88,7 +93,7 @@ bot.on('message', async message => {
 
         case 'resin':
             if (!args[1]) return message.channel.send(`Invalid input!`);
-            utils.get_max_resin_time(message, args[1], args[2], args[3]);
+            utils.get_max_resin_time(message, args[1], args[2]);
         break; 
 
         case 'abyss':

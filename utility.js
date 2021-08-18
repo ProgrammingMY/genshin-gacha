@@ -90,6 +90,7 @@ module.exports = {
         var today = new Date();
 
         if (isNaN(resin) || resin < 0) return message.channel.send(`Invalid input!`);
+        if (isNaN(final_resin)) final_resin = 160;
 
         // calculate remaining time to max out resin
         let max_resin = (Number(final_resin) - Number(resin)) * 8;

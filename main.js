@@ -14,7 +14,6 @@ function auto_login(){
     const python = spawn('python3', ['./auto-login/genshin-os.py']);
     // collect data from script
     python.stdout.on('data', function (data) {
-        console.log('Pipe data from python script ...');
         dataToSend = data.toString();
         var embedmsg = new Discord.MessageEmbed()
             .setDescription(dataToSend);
@@ -22,7 +21,6 @@ function auto_login(){
     });
     // in close event we are sure that stream from child process is closed
     python.on('close', (code) => {
-    console.log(`child process close all stdio with code ${code}`);
     });
 }
 

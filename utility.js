@@ -112,9 +112,9 @@ module.exports = {
         var apm = 'AM';
         var apm_hour = hours;
         if (hours == 0) apm_hour = 12;
-        else if (hours > 12) {
-            apm_hour -= 12;
+        else if (hours >= 12) {
             apm = 'PM';
+            if (hours > 12) apm_hour -= 12;
         }
         
         // HH:MM format

@@ -32,6 +32,7 @@ setInterval(function() {
     }
 }, 60 * 1000) //check every minute
 
+// bot and webhook initialisation
 const bot = new Discord.Client();
 const token = process.env.DISCORD_KEY; 
 const PREFIX = '!';
@@ -39,7 +40,6 @@ const PREFIX = '!';
 var botgacha = new BotGacha;
 
 const PAIMON_REPLY = [`EHE TE NANDAYO!?`, `EHE KEPALA BAPAK KAU!?`, {files: ["https://media.discordapp.net/attachments/852519458760294400/877514791378382948/image0.jpg"]}]
-const COPIUM_REPLY = {files: ["https://media.discordapp.net/attachments/852519458760294400/877514748390932480/image0.jpg"]}
 
 bot.on('ready', () => {
     bot.user.setActivity('!help to get started');
@@ -48,15 +48,31 @@ bot.on('ready', () => {
 });
 
 bot.on('message', async message => {
-    if (message.author.bot) return;
-    if (message.content.match(/\behe\b/i)) {
+    // ehe message respond
+    if(message.author.bot) return;
+    if(message.content.match(/\behe\b/i)) {
         var reply = PAIMON_REPLY[Math.floor(Math.random() * PAIMON_REPLY.length)];
         message.channel.send(reply);
     }
-    if (message.content.match(/\bcopium\b/i)) {
-        message.channel.send(COPIUM_REPLY);
-    }
+    // emote bot
+    if(message.content.match(/[:].*?[:]/)) {
+        // get webhook object in the message channel
+        var webhooks = await message.channel.fetchWebhooks();
+        var webhook = webhooks.first();
+        if (!webhook) return;
 
+        // get emote server object
+        var emote_server = bot.guilds.cache.get(process.env.serverID);
+
+        // get emote from message
+        let emote = message.content.match(/:(.*):/i)[1];
+
+        message.delete();
+        
+        // message from webhook
+        utils.get_emote(message, emote, emote_server, webhook);
+        
+    }
 
     if(!message.content.startsWith(PREFIX) || message.author.bot) return;  
 

@@ -37,6 +37,9 @@ const bot = new Discord.Client();
 const token = process.env.DISCORD_KEY; 
 const PREFIX = '!';
 
+// get list of command
+bot.commands = new Discord.Collection()
+
 var botgacha = new BotGacha;
 
 const PAIMON_REPLY = [`EHE TE NANDAYO!?`, `EHE KEPALA BAPAK KAU!?`, {files: ["https://media.discordapp.net/attachments/852519458760294400/877514791378382948/image0.jpg"]}]
@@ -66,15 +69,14 @@ bot.on('message', async message => {
 
         // get emote from message
         let emote = message.content.match(/:(.*):/i)[1];
-
-        message.delete();
         
         // message from webhook
         utils.get_emote(message, emote, emote_server, webhook);
         
     }
 
-    if(!message.content.startsWith(PREFIX) || message.author.bot) return;  
+    if(!message.content.startsWith(PREFIX)) return;  
+    if(!message.guild) return;
 
     const args = message.content.slice(PREFIX.length).split(/ +/);
 
@@ -122,7 +124,23 @@ bot.on('message', async message => {
         break;
 
         case 'login':
-		auto_login();
+		    auto_login();
+        break;
+
+        case 'emotelist':
+            // get emote server object
+            var emote_server = bot.guilds.cache.get(process.env.serverID);
+            utils.emotelist(message, emote_server);
+        break;
+
+        case 'addemote':
+            if(!args[1]) return message.channel.send('Upload an image/gif with caption \`!addemote <emote name>\`');
+            // get emote server object
+            var emote_server = bot.guilds.cache.get(process.env.serverID);
+            utils.addemote(message, emote_server, args[1]);
+        break;
+
+
 	break;
 
     }

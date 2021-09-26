@@ -207,7 +207,7 @@ module.exports = {
 
         // add emote to the server
         try {
-            message.guild.emojis.create(image_url, emote_name)
+            emote_server.emojis.create(image_url, emote_name)
             .then(emoji => message.channel.send(`Successfully added ${emoji.name} to the server`))
             .catch(console.error);
             

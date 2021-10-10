@@ -1,0 +1,98 @@
+[
+    {
+        "name": "Keqing",
+        "rarity": 5
+    },
+    {
+        "name": "Mona",
+        "rarity": 5
+    },
+    {
+        "name": "Diluc",
+        "rarity": 5
+    },
+    {
+        "name": "Qiqi",
+        "rarity": 5
+    },
+    {
+        "name": "Jean",
+        "rarity": 5
+    },
+    {
+        "name": "Sucrose",
+        "rarity": 4
+    },
+    {
+        "name": "Fischl",
+        "rarity": 4
+    },
+    {
+        "name": "Diona",
+        "rarity": 4
+    },
+    {
+        "name": "Noelle",
+        "rarity": 4
+    },
+    {
+        "name": "Xingqiu",
+        "rarity": 4
+    },
+    {
+        "name": "Xiangling",
+        "rarity": 4
+    },
+    {
+        "name": "Barbara",
+        "rarity": 4
+    },
+    {
+        "name": "Bennett",
+        "rarity": 4
+    },
+    {
+        "name": "Xinyan",
+        "rarity": 4
+    },
+    {
+        "name": "Chongyun",
+        "rarity": 4
+    },
+    {
+        "name": "Ningguang",
+        "rarity": 4
+    },
+    {
+        "name": "Beidou",
+        "rarity": 4
+    },
+    {
+        "name": "Sayu",
+        "rarity": 4
+    },
+    {
+        "name": "Yanfei",
+        "rarity": 4
+    },
+    {
+        "name": "Razor",
+        "rarity": 4
+    },
+    {
+        "name": "Lisa",
+        "rarity": 4,
+        "standard": true
+    },
+    {
+        "name": "Kaeya",
+        "rarity": 4,
+        "standard": true
+    },
+    {
+        "name": "Amber",
+        "rarity": 4,
+        "standard": true
+    }
+
+]

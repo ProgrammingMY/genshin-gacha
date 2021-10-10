@@ -1,0 +1,46 @@
+{
+  "812964745946464257": {
+    "name": "akikun",
+    "pulls": 0,
+    "amount_4": 0,
+    "amount_5": 0,
+    "weapon": {
+      "pity_4": 0,
+      "pity_5": 0,
+      "featured_4": false,
+      "featured_5": false
+    },
+    "character": {
+      "pity_4": 0,
+      "pity_5": 0,
+      "featured_4": false,
+      "featured_5": false
+    },
+    "standard": {
+      "pity_4": 0,
+      "pity_5": 0
+    }
+  },
+  "466594885844336651": {
+    "name": "Aki kun",
+    "pulls": 40,
+    "amount_4": 5,
+    "amount_5": 3,
+    "weapon": {
+      "pity_4": 0,
+      "pity_5": 0,
+      "featured_4": false,
+      "featured_5": false
+    },
+    "character": {
+      "pity_4": 3,
+      "pity_5": 9,
+      "featured_4": false,
+      "featured_5": false
+    },
+    "standard": {
+      "pity_4": 0,
+      "pity_5": 0
+    }
+  }
+}

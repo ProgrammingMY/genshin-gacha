@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 
 module.exports = function(client) {
     // Channel to send notification
-    var login_channel = client.channels.cache.get('804284465534861312'); 
+    var login_channel = client.channels.cache.get(process.env.channelID); 
     var dataToSend;
     // spawn new child process to call the python script
     const python = spawn('python3', ['./auto-login/genshin-os.py']);

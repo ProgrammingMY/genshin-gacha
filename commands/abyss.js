@@ -22,7 +22,7 @@ module.exports = {
         var abyss2 = new Date(today.getFullYear(), today.getMonth(), 16, 4, 0, 0);
 
         // first week
-        if (today.getDate() <= abyss2.getDate()) {
+        if (today.getDate() < abyss2.getDate()) {
             get_remaining_time(message, today, abyss2);
 
         // second week

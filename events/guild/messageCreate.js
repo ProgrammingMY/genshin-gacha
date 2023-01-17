@@ -2,6 +2,10 @@ module.exports = (Discord, client, message) => {
     if(message.author.bot) return;  
     if(!message.guild) return;
 
+    // check if the bot has permission to send message
+    const botPermissions = message.channel.permissionsFor(client.user);
+    if(!botPermissions.has('SEND_MESSAGES')) return console.log("Doesnt have permission to send message");
+
     // emote webhook
     if(message.content.match(/[:].*?[:]/)) {
         const emote_webhook = client.utilities.get('emote_webhook')
@@ -14,7 +18,14 @@ module.exports = (Discord, client, message) => {
 
     // paimon reponds to ehe
     if(message.content.match(/\behe\b/i)) {
-        var reply = client.PAIMON_REPLY[Math.floor(Math.random() * client.PAIMON_REPLY.length)];
+        var reply = ""
+        // check if the bot has attach files permission
+        if(!botPermissions.has('ATTACH_FILES')) {
+            reply = client.PAIMON_REPLY[Math.floor(Math.random() * (client.PAIMON_REPLY.length-1))];
+        } else {
+            reply = client.PAIMON_REPLY[Math.floor(Math.random() * client.PAIMON_REPLY.length)];
+        }
+
         message.channel.send(reply);
     }
 

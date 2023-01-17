@@ -1,8 +1,12 @@
 require('dotenv').config();
 
-module.exports = async function(client, message, emote) {
+module.exports = async function (client, message, emote) {
     // get emote server
     var emote_server = client.guilds.cache.get(process.env.serverID);
+
+    // check if the bot has manage webhooks permission
+    const botPermissions = message.channel.permissionsFor(client.user);
+    if (!botPermissions.has('MANAGE_WEBHOOKS')) return console.log('Doesnt have Manage Webhook permission');
 
     // get webhook object in the message channel
     var webhooks = await message.channel.fetchWebhooks();
@@ -13,8 +17,14 @@ module.exports = async function(client, message, emote) {
     let find_emote = emote_server.emojis.cache.find(emoji => emoji.name === emote.toLowerCase());
     if (!find_emote) return;
 
-    // delete message
-    message.delete();
+    // check if the bot has permission to delete message
+    if (!botPermissions.has('MANAGE_MESSAGES')) {
+        console.log('Doesnt have permission to delete messages')  
+    } else {
+        // delete message
+        message.delete();
+    }
+
 
     //replace author message with emoji
     if (find_emote.animated) {
